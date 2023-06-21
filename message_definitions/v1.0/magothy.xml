@@ -1,0 +1,230 @@
+<?xml version="1.0"?>
+<mavlink>
+    <include>common.xml</include>
+
+    <version>1</version>
+    <dialect>77</dialect>
+
+    <enums>
+
+        <enum name="MAGOTHY_CAPABILITY" bitmask="true">
+            <description>Magothy capability flags (bitmask)</description>
+            <entry value="1" name="MAGOTHY_CAPABILITY_LOG_MANAGEMENT">
+                <description>Set if log management is enabled</description>
+            </entry>
+            <entry value="2" name="MAGOTHY_CAPABILITY_FIRMWARE_UPDATE">
+                <description>Set if firmware update is enabled</description>
+            </entry>
+            <entry value="4" name="MAGOTHY_CAPABILITY_GYRO_CAL">
+                <description>Set if gyro calibration is enabled</description>
+            </entry>
+            <entry value="8" name="MAGOTHY_CAPABILITY_MAG_CAL_2D">
+                <description>Set if 2D magnetometer calibration is enabled</description>
+            </entry>
+            <entry value="16" name="MAGOTHY_CAPABILITY_MAG_CAL_3D">
+                <description>Set if 3D magnetometer calibration is enabled</description>
+            </entry>
+            <entry value="32" name="MAGOTHY_CAPABILITY_SPY">
+                <description>Set if spy is enabled</description>
+            </entry>
+        </enum>
+
+        <enum name="MAGOTHY_FAULT_RESPONSE">
+            <entry value="0" name="MAGOTHY_FAULT_RESPONSE_IGNORE">
+                <description>Disable Fault</description>
+            </entry>
+            <entry value="1" name="MAGOTHY_FAULT_RESPONSE_DRIFT">
+                <description>Drift after fault</description>
+            </entry>
+            <entry value="2" name="MAGOTHY_FAULT_RESPONSE_LOITER">
+                <description>Loiter at the current position</description>
+            </entry>
+            <entry value="3" name="MAGOTHY_FAULT_RESPONSE_RALLY">
+                <description>Travel to the nearest rally point</description>
+            </entry>
+            <entry value="4" name="MAGOTHY_FAULT_RESPONSE_FIRST">
+                <description>Travel to the mission's first waypoint</description>
+            </entry>
+            <entry value="5" name="MAGOTHY_FAULT_RESPONSE_FINAL">
+                <description>Travel to the mission's final waypoint</description>
+            </entry>
+            <entry value="6" name="MAGOTHY_FAULT_RESPONSE_LAUNCH">
+                <description>Travel to the mission's launch point</description>
+            </entry>
+            <entry value="7" name="MAGOTHY_FAULT_RESPONSE_CUSTOM">
+                <description>Perform fault response defined in vehicle configuration</description>
+            </entry>
+        </enum>
+
+        <!-- magothy specific MAV_CMD_* commands -->
+        <enum name="MAV_CMD">
+            <!-- 200 to 214 used by common.xml -->
+            <entry value="50200" name="MAV_CMD_DO_REBOOT" hasLocation="false" isDestination="false">
+            </entry>
+
+            <entry value="50201" name="MAV_CMD_DO_START_FIRMWARE_UPDATE" hasLocation="false" isDestination="false">
+                <param index="1" label="UUID LSB">UUID bytes 0-3 encoded in little-endian</param>
+                <param index="2" label="UUID">UUID bytes 4-7 encoded in little-endian</param>
+                <param index="3" label="UUID">UUID bytes 8-11 encoded in little-endian</param>
+                <param index="4" label="UUID MSB">UUID bytes 12-15 encoded in little-endian</param>
+            </entry>
+
+            <entry value="50202" name="MAV_CMD_DO_START_GYRO_CAL" hasLocation="false" isDestination="false">
+            </entry>
+
+            <entry value="50203" name="MAV_CMD_DO_START_MAG_CAL_2D" hasLocation="false" isDestination="false">
+            </entry>
+
+            <entry value="50206" name="MAV_CMD_DO_START_MAG_CAL_3D" hasLocation="false" isDestination="false">
+            </entry>
+
+            <entry value="50207" name="MAV_CMD_DO_STOP_MAG_CAL_3D" hasLocation="false" isDestination="false">
+            </entry>
+
+            <entry value="50204" name="MAV_CMD_DO_SET_FAULT_RESPONSE" hasLocation="false" isDestination="false">
+                <description>Set the fault response for the given fault</description>
+                <param index="1" label="FAULT_ID" minValue="0" maxValue="31" increment="1">Id of the fault to change</param>
+                <param index="2" label="FAULT_RESPONSE" enum="MAGOTHY_FAULT_RESPONSE">Id of the response type for this fault</param>
+            </entry>
+
+            <entry value="50205" name="MAV_CMD_DO_SET_FAULT_RESPONSE_PARAMS" hasLocation="true" isDestination="false">
+                <description>Set the fault response parameters for the mission</description>
+                <param index="1" label="LOITER_RADIUS" units="m">Radius to loiter at the response point</param>
+                <param index="2" label="LOITER_DURATION" units="s">Duration to loiter at the response point</param>
+                <param index="3" label="RESPONSE_SPEED" units="m/s">Speed to travel to the response point</param>
+                <param index="4">Empty</param>
+                <param index="5">Empty</param>
+                <param index="6">Empty</param>
+                <param index="7">Empty</param>
+            </entry>
+
+            <entry value="50208" name="MAV_CMD_DO_GENERIC_COMMAND" hasLocation="false" isDestination="false">
+                <description>Immediatedly start a generic mission</description>
+                <param index="1" label="Lateral Command">Null, Rudder %, or Heading deg</param>
+                <param index="2" label="Vertical Command">Null, Elevator %, Depth m, or Altitude m</param>
+                <param index="3" label="Longitudinal Command">Null, Thrust %, or Speed m/s</param>
+                <param index="4" label="Roll Command">Null, Aileron %, or Roll deg</param>
+                <param index="5" label="Duration" units="s">Command duration in seconds</param>
+                <param index="6" label="Command Type Enums">Interpret bytes as 32-bit unsigned int
+                Byte 0 - Lateral Enum: 0=null, 1=rudder, 2=heading
+                Byte 1 - Vertical Enum: 0=null, 1=elevator, 2=depth, 3=altitude
+                Byte 2 - Longitudinal Enum: 0=null, 1=thrust, 2=speed
+                Byte 3 - Roll Enum: 0=null, 1=aileron, 2=roll</param>
+                <param index="7" label="UUID LSB">UUID bytes 0-3 encoded in little-endian</param>
+            </entry>
+
+            <entry value="50209" name="MAV_CMD_DO_ZIG_ZIG_COMMAND" hasLocation="false" isDestination="false">
+                <description>Immediately start a zig-zag mission for lateral model detection</description>
+                <param index="1" label="Initial Heading" units="deg">Oscillate about this heading. If NaN, use heading at mission start</param>
+                <param index="2" label="Longitudinal Command">Null, Thrust %, or Speed m/s</param>
+                <param index="3" label="Rudder" units="%">Switch between +/- rudder command</param>
+                <param index="4" label="Delta Heading" units="deg">Heading change before flipping rudder command</param>
+                <param index="5" label="Max Duration" units="s">Maximum command duration in seconds</param>
+                <param index="6" label="Command Type Enums">Interpret bytes as 32-bit unsigned int
+                Byte 0 - Longitudinal Enum: 0=null, 1=thrust, 2=speed
+                Byte 1 - Number of repetions</param>
+                <param index="7" label="UUID LSB">UUID bytes 0-3 encoded in little-endian</param>
+            </entry>
+
+            <entry value="50300" name="MAV_CMD_DO_MAGOTHY_CUSTOM_0" hasLocation="false" isDestination="false">
+                <description>Immediately start a magothy custom 0 mission. This message will have vehicle specific meaning</description>
+                <param index="1" label="Param1">Vehicle specific</param>
+                <param index="2" label="Param2">Vehicle specific</param>
+                <param index="3" label="Param3">Vehicle specific</param>
+                <param index="4" label="Param4">Vehicle specific</param>
+                <param index="5" label="Param5">Vehicle specific</param>
+                <param index="6" label="Max Duration" units="s">Maximum command duration in seconds</param>
+                <param index="7" label="UUID LSB">UUID bytes 0-3 encoded in little-endian</param>
+            </entry>
+
+            <entry value="50301" name="MAV_CMD_DO_MAGOTHY_CUSTOM_1" hasLocation="false" isDestination="false">
+                <description>Immediately start a magothy custom 1 mission. This message will have vehicle specific meaning</description>
+                <param index="1" label="Param1">Vehicle specific</param>
+                <param index="2" label="Param2">Vehicle specific</param>
+                <param index="3" label="Param3">Vehicle specific</param>
+                <param index="4" label="Param4">Vehicle specific</param>
+                <param index="5" label="Param5">Vehicle specific</param>
+                <param index="6" label="Max Duration" units="s">Maximum command duration in seconds</param>
+                <param index="7" label="UUID LSB">UUID bytes 0-3 encoded in little-endian</param>
+            </entry>
+
+            <entry value="50302" name="MAV_CMD_DO_MAGOTHY_CUSTOM_2" hasLocation="false" isDestination="false">
+                <description>Immediately start a magothy custom 2 mission. This message will have vehicle specific meaning</description>
+                <param index="1" label="Param1">Vehicle specific</param>
+                <param index="2" label="Param2">Vehicle specific</param>
+                <param index="3" label="Param3">Vehicle specific</param>
+                <param index="4" label="Param4">Vehicle specific</param>
+                <param index="5" label="Param5">Vehicle specific</param>
+                <param index="6" label="Max Duration" units="s">Maximum command duration in seconds</param>
+                <param index="7" label="UUID LSB">UUID bytes 0-3 encoded in little-endian</param>
+            </entry>
+        </enum>
+
+    </enums>
+
+    <messages>
+
+        <!-- Magothy messages -->
+        <message id="50001" name="MAGOTHY_ECHOSOUNDER">
+            <description>Reports depth and temperature measured by echosounder</description>
+            <field type="uint64_t" name="time_usec" units="us">Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.</field>
+            <field type="float" name="water_depth_low_freq_m">Water Depth (Low Frequency) (m)</field>
+            <field type="float" name="water_depth_high_freq_m">Water Depth (High Frequency) (m)</field>
+            <field type="float" name="water_temperature_C">Water Temperature (C)</field>
+        </message>
+
+        <message id="50002" name="MAGOTHY_MISSION_TELEMETRY">
+            <description>Report mission based telemetry</description>
+            <field type="uint64_t" name="unix_time_usec" units="us">Unix Timestamp</field>
+            <field type="uint32_t" name="uptime_msec" units="ms">Vehicle Controller uptime</field>
+            <field type="float" name="mission_item_time_elapsed_s" units="s">Elasped time of currently executing mission item (s) - NaN if not in mission</field>
+            <field type="float" name="mission_item_time_remaining_s" units="s">Remaining time of currently executing mission item (s) - NaN if not in mission</field>
+            <field type="float" name="mission_time_elapsed_s" units="s">Elasped time of entire mission (s) - NaN if not in mission</field>
+            <field type="float" name="mission_time_remaining_s" units="s">Remaining time of entire mission (s) - NaN if not in mission</field>
+            <field type="float" name="distance_to_target_m" units="m">Distance to target (waypoint/loiter/etc) (m) - NaN if not in mission or not geo based</field>
+            <field type="float" name="cross_track_error_m" units="m">Trackline offtrack error (m) - NaN if not in mission or not in trackline</field>
+            <field type="char[16]" name="gcs_set_mode_uuid">UUID of most recent mode change</field>
+        </message>
+
+        <message id="50003" name="MAGOTHY_WATER_CURRENT">
+            <description>Reports speed and direction of water current</description>
+            <field type="uint64_t" name="time_usec" units="us">Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.</field>
+            <field type="float" name="water_current_speed_mps">Water Current Speed (m/s)</field>
+            <field type="float" name="water_current_direction_deg">Water Current Direction (deg)</field>
+            <field type="float" name="water_current_age_s">Water Current Age (s)</field>
+        </message>
+
+        <message id="50100" name="MAGOTHY_CAPABILITY">
+            <description>Report Magothy specific capabilities</description>
+            <field type="uint16_t" name="enablement_bitmask" enum="MAGOTHY_CAPABILITY" display="bitmask">Additional Capability Bitmask</field>
+            <field type="uint8_t[4]" name="spy_ip_address">IP Address to Spy server</field>
+            <field type="uint16_t" name="spy_port">Port to Spy server</field>
+            <field type="uint8_t[4]" name="log_management_ip_address">IP Address to Log WebDAV server</field>
+            <field type="uint16_t" name="log_management_port">Port to Log WebDAV server</field>
+            <field type="char[32]" name="log_management_endpoint">Base URL prefix to Log WebDAV server</field>
+            <field type="uint8_t[4]" name="firmware_upload_ip_address">IP Address to Firmware Update web server</field>
+            <field type="uint16_t" name="firmware_upload_port">Port to Firmware Update web server</field>
+            <field type="char[32]" name="firmware_upload_endpoint">Base URL prefix to Firmware Update web server</field>
+            <field type="uint8_t[20]" name="firmware_sha1">sha1 of meta-magothy</field>
+            <field type="uint8_t" name="firmware_sha1_dirty">sha1 is clean if 0, else dirty</field>
+            <field type="char[32]" name="firmware_version">Pretty version string</field>
+            <field type="char[16]" name="device_type">Identifier to distinguish between vehicle types</field>
+            <field type="char[20]" name="log_date_time">Log file date time prefix</field>
+            <field type="char[16]" name="vehicle_name">Vehicle Name - Log file suffix</field>
+        </message>
+
+        <message id="50101" name="MAGOTHY_3D_MAG_CAL_PARAMS">
+            <description>Report 3D Magnetometer Calibration results, emitted after a successful calibration</description>
+            <field type="float[3]" name="hard_iron">Hard Iron Offsets</field>
+            <field type="float[9]" name="soft_iron">Soft Iron Rotation Matrix</field>
+            <field type="float" name="uncalibrated_norm_mean">Norm mean of raw mag data</field>
+            <field type="float" name="uncalibrated_norm_std_dev">Norm standard deviation of raw mag data</field>
+            <field type="float" name="uncalibrated_norm_max_error">Maximum norm error (difference from 1.0) of raw mag data</field>
+            <field type="float" name="calibrated_norm_mean">Norm mean of calibrated mag data</field>
+            <field type="float" name="calibrated_norm_std_dev">Norm standard deviation of calibrated mag data</field>
+            <field type="float" name="calibrated_norm_max_error">Maximum norm error (difference from 1.0) of calibrated mag data</field>
+        </message>
+
+    </messages>
+
+</mavlink>
