@@ -126,6 +126,17 @@
                 <param index="7" label="UUID LSB">UUID bytes 0-3 encoded in little-endian</param>
             </entry>
 
+            <entry value="50210" name="MAV_CMD_DO_FILE_MISSION_COMMAND" hasLocation="false" isDestination="false">
+                <description>Immediately start a file based mission</description>
+                <param index="1" label="Filename Index">Cast to nearest integer. Start mission with filename "mission{index}.yml"</param>
+                <param index="2">Empty</param>
+                <param index="3">Empty</param>
+                <param index="4">Empty</param>
+                <param index="5">Empty</param>
+                <param index="6">Empty</param>
+                <param index="7" label="UUID LSB">UUID bytes 0-3 encoded in little-endian</param>
+            </entry>
+
             <entry value="50300" name="MAV_CMD_DO_MAGOTHY_CUSTOM_0" hasLocation="false" isDestination="false">
                 <description>Immediately start a magothy custom 0 mission. This message will have vehicle specific meaning</description>
                 <param index="1" label="Param1">Vehicle specific</param>
@@ -223,6 +234,34 @@
             <field type="float" name="calibrated_norm_mean">Norm mean of calibrated mag data</field>
             <field type="float" name="calibrated_norm_std_dev">Norm standard deviation of calibrated mag data</field>
             <field type="float" name="calibrated_norm_max_error">Maximum norm error (difference from 1.0) of calibrated mag data</field>
+        </message>
+
+        <message id="50004" name="MAGOTHY_LOW_BANDWIDTH">
+            <description>The heartbeat message shows that a system or component is present and responding. The type and autopilot fields (along with the message component id), allow the receiving system to treat further messages from this system appropriately (e.g. by laying out the user interface based on the autopilot). This microservice is documented at https://mavlink.io/en/services/heartbeat.html</description>
+            <field type="uint8_t" name="type" enum="MAV_TYPE">Vehicle or component type. For a flight controller component the vehicle type (quadrotor, helicopter, etc.). For other components the component type (e.g. camera, gimbal, etc.). This should be used in preference to component id for identifying the component type.</field>
+            <field type="uint32_t" name="custom_mode">A bitfield for use for autopilot-specific flags</field>
+
+            <field type="uint32_t" name="onboard_control_sensors_present" enum="MAV_SYS_STATUS_SENSOR" display="bitmask" print_format="0x%04x">Bitmap showing which onboard controllers and sensors are present. Value of 0: not present. Value of 1: present.</field>
+            <field type="uint32_t" name="onboard_control_sensors_enabled" enum="MAV_SYS_STATUS_SENSOR" display="bitmask" print_format="0x%04x">Bitmap showing which onboard controllers and sensors are enabled:  Value of 0: not enabled. Value of 1: enabled.</field>
+            <field type="uint32_t" name="onboard_control_sensors_health" enum="MAV_SYS_STATUS_SENSOR" display="bitmask" print_format="0x%04x">Bitmap showing which onboard controllers and sensors have an error (or are operational). Value of 0: error. Value of 1: healthy.</field>
+            <field type="uint16_t" name="voltage_battery" units="mV">Battery voltage, UINT16_MAX: Voltage not sent by autopilot</field>
+            <field type="int16_t" name="current_battery" units="cA">Battery current, -1: Current not sent by autopilot</field>
+            <field type="int8_t" name="battery_remaining" units="%">Battery energy remaining, -1: Battery remaining energy not sent by autopilot</field>
+
+            <field type="uint16_t" name="mission_seq">Sequence number of the current active mission item. UINT16_MAX: not in mission</field>
+
+            <field type="int32_t" name="lat" units="degE7">Latitude (WGS84, EGM96 ellipsoid)</field>
+            <field type="int32_t" name="lon" units="degE7">Longitude (WGS84, EGM96 ellipsoid)</field>
+            <field type="uint16_t" name="speed" units="cm/s">GPS ground speed. If unknown, set to: UINT16_MAX</field>
+            <field type="uint16_t" name="course" units="cdeg">Course over ground in degrees * 100, 0.0..359.99 degrees. If unknown, set to: UINT16_MAX</field>
+            <field type="uint8_t" name="satellites_visible">Number of satellites visible. If unknown, set to 255</field>
+
+            <field type="uint16_t" name="heading" units="cdeg">Heading in degrees * 100, 0.0..359.99 degrees. If unknown, set to: UINT16_MAX</field>
+
+            <field type="uint8_t" name="is_position_independent">1 if position measurement is independent (gps), else 0</field>
+            <field type="uint16_t" name="position_error" units="cm">Position estimate error. If unknown, set to: UINT16_MAX</field>
+            <field type="uint16_t" name="desired_speed" units="cm/s">Desired ground speed. If unknown, set to: UINT16_MAX</field>
+            <field type="uint16_t" name="desired_course" units="cdeg">Desired course over ground in degrees * 100, 0.0..359.99 degrees. If unknown, set to: UINT16_MAX</field>
         </message>
 
     </messages>
