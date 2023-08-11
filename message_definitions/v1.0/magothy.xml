@@ -56,6 +56,21 @@
             </entry>
         </enum>
 
+        <enum name="MAGOTHY_LICENSE_TRANSFER_TYPE">
+            <entry value="0" name="MAGOTHY_LICENSE_TRANSFER_TYPE_ACTIVATION">
+                <description>Activation request message. Embedded to Cloud</description>
+            </entry>
+            <entry value="1" name="MAGOTHY_LICENSE_TRANSFER_TYPE_LICENSE_FILE">
+                <description>License file, response to activation request. Cloud to Embedded</description>
+            </entry>
+            <entry value="2" name="MAGOTHY_LICENSE_TRANSFER_TYPE_DEACTIVATION">
+                <description>Deactivation report message. Embedded to Cloud</description>
+            </entry>
+            <entry value="3" name="MAGOTHY_LICENSE_TRANSFER_TYPE_DEACTIVATION_PERMISSION">
+                <description>Grants permission to deactivate invalid license. Cloud to Embedded</description>
+            </entry>
+        </enum>
+
         <!-- magothy specific MAV_CMD_* commands -->
         <enum name="MAV_CMD">
             <!-- 200 to 214 used by common.xml -->
@@ -262,6 +277,48 @@
             <field type="uint16_t" name="position_error" units="cm">Position estimate error. If unknown, set to: UINT16_MAX</field>
             <field type="uint16_t" name="desired_speed" units="cm/s">Desired ground speed. If unknown, set to: UINT16_MAX</field>
             <field type="uint16_t" name="desired_course" units="cdeg">Desired course over ground in degrees * 100, 0.0..359.99 degrees. If unknown, set to: UINT16_MAX</field>
+        </message>
+
+        <message id="50150" name="MAGOTHY_LICENSE_INFO">
+            <description>Sent from Vehicle. Contains product licensing information such as product key and activation status.</description>
+            <field type="uint8_t" name="is_set">1 if license key is set, else 0</field>
+            <field type="uint8_t" name="is_valid">1 if license key is valid, else 0</field>
+            <field type="char[64]" name="product_key">license product_key - must be null terminated if length is less than 64</field>
+        </message>
+
+        <message id="50151" name="MAGOTHY_LICENSE_TRANSFER_INITIALIZE">
+            <description>Sent from Magothy Console to Vehicle, command to generate an license [de]activation file. Vehicle will respond with MAGOTHY_LICENSE_TRANSFER_ACK</description>
+            <field type="uint8_t" name="target_system">system id of target system</field>
+            <field type="uint8_t" name="transfer_type" enum="MAGOTHY_LICENSE_TRANSFER_TYPE">file type</field>
+            <field type="char[64]" name="product_key">license product_key - must be null terminated if length is less than 64</field>
+        </message>
+
+        <message id="50153" name="MAGOTHY_LICENSE_TRANSFER_REQUEST">
+            <description>Sent from Magothy Console to Vehicle, requests a partial license manager file. Vehicle will respond with MAGOTHY_LICENSE_TRANSFER</description>
+            <field type="uint8_t" name="target_system">system id of target system</field>
+            <field type="uint8_t" name="transfer_type" enum="MAGOTHY_LICENSE_TRANSFER_TYPE">file type</field>
+            <field type="uint8_t" name="chunk_index">chunk index of license transfer</field>
+        </message>
+
+        <message id="50154" name="MAGOTHY_LICENSE_TRANSFER">
+            <description>Sent to/from Magothy Console and Vehicle. Used to transfer a portion of a large payload. When the Vehicle receives this message, it will respond with MAGOTHY_LICENSE_TRANSFER_ACK</description>
+            <field type="uint8_t" name="target_system">system id of target system</field>
+            <field type="uint8_t" name="transfer_type" enum="MAGOTHY_LICENSE_TRANSFER_TYPE">file type</field>
+            <field type="uint8_t" name="chunk_index">chunk index</field>
+            <field type="uint8_t" name="num_chunk">total number of chunks</field>
+            <field type="uint16_t" name="crc16">CRC-16/CCITT-FALSE of complete payload</field>
+            <field type="uint8_t" name="payload_len">length of this chunk payload</field>
+            <field type="uint8_t[248]" name="payload">payload of this chunk</field>
+        </message>
+
+        <message id="50155" name="MAGOTHY_LICENSE_TRANSFER_ACK">
+            <description>Send from Vehicle to Magothy Console. Sent as a response to MAGOTHY_LICENSE_TRANSFER_INITIALIZE and MAGOTHY_LICENSE_TRANSFER messages</description>
+            <field type="uint8_t" name="target_system">system id of target system</field>
+            <field type="uint8_t" name="transfer_type" enum="MAGOTHY_LICENSE_TRANSFER_TYPE">file type</field>
+            <field type="uint8_t" name="chunk_index">chunk index</field>
+            <field type="uint8_t" name="num_chunk">total number of chunks</field>
+            <field type="uint16_t" name="crc16">CRC-16/CCITT-FALSE of complete payload</field>
+            <field type="uint8_t" name="result" enum="MAV_RESULT">result of command</field>
         </message>
 
     </messages>
