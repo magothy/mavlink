@@ -40,6 +40,7 @@ jobs:
           ls -lah
           ls -lah mavlink-c-library
           python3 "pymavlink/tools/mavgen.py" -o mavlink-c-library/mavlink --lang C --wire-protocol 2.0 --strict-units message_definitions/v1.0/magothy.xml
+          python3 generate_lookup_header.py message_definitions/v1.0/magothy.xml mavlink-c-library/mavlink/magothy/mavlink_lookup.hpp
           ls -lah mavlink-c-library/mavlink
           cd mavlink-c-library
           git config user.email github@magothyrt.com
