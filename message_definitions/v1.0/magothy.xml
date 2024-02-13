@@ -143,7 +143,7 @@
 
             <entry value="50210" name="MAV_CMD_DO_FILE_MISSION_COMMAND" hasLocation="false" isDestination="false">
                 <description>Immediately start a file based mission</description>
-                <param index="1" label="Filename Index">Cast to nearest integer. Start mission with filename "mission{index}.yml"</param>
+                <param index="1" label="Filename Index">Cast to nearest integer. Start mission with filename mission{index}.yml</param>
                 <param index="2">Empty</param>
                 <param index="3">Empty</param>
                 <param index="4">Empty</param>
@@ -154,7 +154,7 @@
 
             <entry value="50211" name="MAV_CMD_DO_SET_FILE_MISSION_COMMAND" hasLocation="false" isDestination="false">
                 <description>Save uploaded mission to disk for execution with MAV_CMD_DO_FILE_MISSION_COMMAND</description>
-                <param index="1" label="Filename Index">Cast to nearest integer. Save uploaded mission to file "mission{index}.yml"</param>
+                <param index="1" label="Filename Index">Cast to nearest integer. Save uploaded mission to file mission{index}.yml</param>
                 <param index="2">Empty</param>
                 <param index="3">Empty</param>
                 <param index="4">Empty</param>
