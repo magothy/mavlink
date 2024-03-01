@@ -66,9 +66,6 @@
             <entry value="2" name="MAGOTHY_LICENSE_TRANSFER_TYPE_DEACTIVATION">
                 <description>Deactivation report message. Embedded to Cloud</description>
             </entry>
-            <entry value="3" name="MAGOTHY_LICENSE_TRANSFER_TYPE_DEACTIVATION_PERMISSION">
-                <description>Grants permission to deactivate invalid license. Cloud to Embedded</description>
-            </entry>
         </enum>
 
         <!-- magothy specific MAV_CMD_* commands -->
@@ -295,6 +292,7 @@
             <field type="uint8_t" name="is_set">1 if license key is set, else 0</field>
             <field type="uint8_t" name="is_valid">1 if license key is valid, else 0</field>
             <field type="char[64]" name="product_key">license product_key - must be null terminated if length is less than 64</field>
+            <field type="char[64]" name="description">user provided description - must be null terminated if length is less than 64</field>
         </message>
 
         <message id="50151" name="MAGOTHY_LICENSE_TRANSFER_INITIALIZE">
@@ -302,6 +300,7 @@
             <field type="uint8_t" name="target_system">system id of target system</field>
             <field type="uint8_t" name="transfer_type" enum="MAGOTHY_LICENSE_TRANSFER_TYPE">file type</field>
             <field type="char[64]" name="product_key">license product_key - must be null terminated if length is less than 64</field>
+            <field type="char[64]" name="description">user provided description - must be null terminated if length is less than 64</field>
         </message>
 
         <message id="50153" name="MAGOTHY_LICENSE_TRANSFER_REQUEST">
