@@ -18,12 +18,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
 
       - name: Checkout mavlink-c-library
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: magothy/mavlink-c-library
           ssh-key: ${{ secrets.SSH_KEY }}
