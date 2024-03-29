@@ -160,6 +160,17 @@
                 <param index="7" label="UUID LSB">UUID bytes 0-3 encoded in little-endian</param>
             </entry>
 
+            <entry value="50212" name="MAV_CMD_DO_MILLING" hasLocation="true" isDestination="false">
+                <description>Immediately start a magothy custom 2 mission. This message will have vehicle specific meaning</description>
+                <param index="1" label="Duration">Maximum mission duration in seconds</param>
+                <param index="2" label="Speed">Vehicle speed in m/s</param>
+                <param index="3" label="FenceIndex">Index (0-based) of fence item (must be keep-in) corresponding to milling area.</param>
+                <param index="4">Empty</param>
+                <param index="5" label="Latitude">Latitude</param>
+                <param index="6" label="Longitude">Longitude</param>
+                <param index="7" label="Altitude" units="m">Altitude</param>
+            </entry>
+
             <entry value="50300" name="MAV_CMD_DO_MAGOTHY_CUSTOM_0" hasLocation="false" isDestination="false">
                 <description>Immediately start a magothy custom 0 mission. This message will have vehicle specific meaning</description>
                 <param index="1" label="Param1">Vehicle specific</param>
@@ -285,6 +296,17 @@
             <field type="uint16_t" name="position_error" units="cm">Position estimate error. If unknown, set to: UINT16_MAX</field>
             <field type="uint16_t" name="desired_speed" units="cm/s">Desired ground speed. If unknown, set to: UINT16_MAX</field>
             <field type="uint16_t" name="desired_course" units="cdeg">Desired course over ground in degrees * 100, 0.0..359.99 degrees. If unknown, set to: UINT16_MAX</field>
+
+            <extensions/>
+            <field type="uint32_t" name="gcs_set_mode_uuid_lsb">UUID of most recent mode change</field>
+        </message>
+
+        <message id="50005" name="MAGOTHY_PROTOBUF_PROXY">
+            <description>Sent to/from Magothy Console and Vehicle. Encapsulates a serialized protobuf message</description>
+            <field type="uint16_t" name="proto_id">Message ID to corresponding to protobuf message type</field>
+            <field type="uint8_t" name="is_compressed">0 - not compressed, 1 - compressed with zstd</field>
+            <field type="uint8_t" name="data_len">length of serialized protobuf message </field>
+            <field type="uint8_t[251]" name="data">serialized protobuf message buffer</field>
         </message>
 
         <message id="50150" name="MAGOTHY_LICENSE_INFO">
