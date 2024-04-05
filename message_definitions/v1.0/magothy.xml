@@ -161,14 +161,25 @@
             </entry>
 
             <entry value="50212" name="MAV_CMD_DO_MILLING" hasLocation="true" isDestination="false">
-                <description>Immediately start a magothy custom 2 mission. This message will have vehicle specific meaning</description>
+                <description>Instruct the vehicle to randomly traverse the specified area. Shape my be circle or polygon</description>
                 <param index="1" label="Duration">Maximum mission duration in seconds</param>
                 <param index="2" label="Speed">Vehicle speed in m/s</param>
-                <param index="3" label="FenceIndex">Index (0-based) of fence item (must be keep-in) corresponding to milling area.</param>
-                <param index="4">Empty</param>
+                <param index="3" label="Radius">NaN: shape is a polygon. Finite: shape is a circle - radius in meters</param>
+                <param index="4" label="PolygonUid">Each polygon definition should have a randomly generated UID. Used to associate vertices with polygon</param>
+                <param index="5" label="Latitude">Latitude, only meaningful if shape is circle</param>
+                <param index="6" label="Longitude">Longitude, only meaningful if shape is circle</param>
+                <param index="7" label="Altitude" units="m">Altitude</param>
+            </entry>
+
+            <entry value="50213" name="MAV_CMD_DO_SET_MILLING_POLYGON_VERTEX" hasLocation="true" isDestination="false">
+                <description>Defines a vertex for a milling polygon. For a given polygon, all vertices should be sent monotonically increasing immediately preceding the corresponding MAV_CMD_DO_MILLING message. MAV_CMD_DO_SET_MILLING_POLYGON_VERTEX must only be sent if the corresponding MAV_CMD_DO_MILLING shape is polygon</description>
+                <param index="1" label="VertexIndex">Index (0-based) of vertex</param>
+                <param index="2" label="NumVertices">Total number of polygon vertices. Should be an "open" polygon - last vertex should be distinct from first</param>
+                <param index="3">Empty</param>
+                <param index="4" label="PolygonUid">Each polygon definition should have a randomly generated UID. Used to associate vertices with polygon</param>
                 <param index="5" label="Latitude">Latitude</param>
                 <param index="6" label="Longitude">Longitude</param>
-                <param index="7" label="Altitude" units="m">Altitude</param>
+                <param index="7">Empty</param>
             </entry>
 
             <entry value="50300" name="MAV_CMD_DO_MAGOTHY_CUSTOM_0" hasLocation="false" isDestination="false">
