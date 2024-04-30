@@ -310,6 +310,7 @@
 
             <extensions/>
             <field type="uint32_t" name="gcs_set_mode_uuid_lsb">UUID of most recent mode change</field>
+            <field type="uint16_t" name="mission_crc">CRC-16/CCITT-FALSE of serialized loaded mission</field>
         </message>
 
         <message id="50005" name="MAGOTHY_PROTOBUF_PROXY">
@@ -358,6 +359,31 @@
             <description>Send from Vehicle to Magothy Console. Sent as a response to MAGOTHY_LICENSE_TRANSFER_INITIALIZE and MAGOTHY_LICENSE_TRANSFER messages</description>
             <field type="uint8_t" name="target_system">system id of target system</field>
             <field type="uint8_t" name="transfer_type" enum="MAGOTHY_LICENSE_TRANSFER_TYPE">file type</field>
+            <field type="uint8_t" name="chunk_index">chunk index</field>
+            <field type="uint8_t" name="num_chunk">total number of chunks</field>
+            <field type="uint16_t" name="crc16">CRC-16/CCITT-FALSE of complete payload</field>
+            <field type="uint8_t" name="result" enum="MAV_RESULT">result of command</field>
+        </message>
+
+        <message id="50250" name="MAGOTHY_MISSION_REQUEST">
+            <description>Sent from Magothy Console to Vehicle, requests a chunk of the loaded mission. Vehicle will respond with MAGOTHY_MISSION_TRANSFER</description>
+            <field type="uint8_t" name="target_system">system id of target system</field>
+            <field type="uint8_t" name="chunk_index">chunk index of license transfer</field>
+        </message>
+
+        <message id="50251" name="MAGOTHY_MISSION_TRANSFER">
+            <description>Sent to/from Magothy Console and Vehicle. Used to transfer a portion of a loaded serialized mission payload. When the Vehicle receives this message, it will respond with MAGOTHY_MISSION_ACK</description>
+            <field type="uint8_t" name="target_system">system id of target system</field>
+            <field type="uint8_t" name="chunk_index">chunk index</field>
+            <field type="uint8_t" name="num_chunk">total number of chunks</field>
+            <field type="uint16_t" name="crc16">CRC-16/CCITT-FALSE of complete payload</field>
+            <field type="uint8_t" name="payload_len">length of this chunk payload</field>
+            <field type="uint8_t[249]" name="payload">payload of this chunk</field>
+        </message>
+
+        <message id="50252" name="MAGOTHY_MISSION_ACK">
+            <description>Sent from Vehicle to Magothy Console. Sent as a response to MAGOTHY_MISSION_TRANSFER</description>
+            <field type="uint8_t" name="target_system">system id of target system</field>
             <field type="uint8_t" name="chunk_index">chunk index</field>
             <field type="uint8_t" name="num_chunk">total number of chunks</field>
             <field type="uint16_t" name="crc16">CRC-16/CCITT-FALSE of complete payload</field>
