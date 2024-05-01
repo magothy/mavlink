@@ -368,22 +368,25 @@
         <message id="50250" name="MAGOTHY_MISSION_REQUEST">
             <description>Sent from Magothy Console to Vehicle, requests a chunk of the loaded mission. Vehicle will respond with MAGOTHY_MISSION_TRANSFER</description>
             <field type="uint8_t" name="target_system">system id of target system</field>
+            <field type="uint8_t" name="session_id">increment at the beginning of each "session", can be used to correlate different chunks or detect new sessions</field>
             <field type="uint8_t" name="chunk_index">chunk index of license transfer</field>
         </message>
 
         <message id="50251" name="MAGOTHY_MISSION_TRANSFER">
             <description>Sent to/from Magothy Console and Vehicle. Used to transfer a portion of a loaded serialized mission payload. When the Vehicle receives this message, it will respond with MAGOTHY_MISSION_ACK</description>
             <field type="uint8_t" name="target_system">system id of target system</field>
+            <field type="uint8_t" name="session_id">increment at the beginning of each "session", can be used to correlate different chunks or detect new sessions</field>
             <field type="uint8_t" name="chunk_index">chunk index</field>
             <field type="uint8_t" name="num_chunk">total number of chunks</field>
             <field type="uint16_t" name="crc16">CRC-16/CCITT-FALSE of complete payload</field>
             <field type="uint8_t" name="payload_len">length of this chunk payload</field>
-            <field type="uint8_t[249]" name="payload">payload of this chunk</field>
+            <field type="uint8_t[248]" name="payload">payload of this chunk</field>
         </message>
 
         <message id="50252" name="MAGOTHY_MISSION_ACK">
             <description>Sent from Vehicle to Magothy Console. Sent as a response to MAGOTHY_MISSION_TRANSFER</description>
             <field type="uint8_t" name="target_system">system id of target system</field>
+            <field type="uint8_t" name="session_id">increment at the beginning of each "session", can be used to correlate different chunks or detect new sessions</field>
             <field type="uint8_t" name="chunk_index">chunk index</field>
             <field type="uint8_t" name="num_chunk">total number of chunks</field>
             <field type="uint16_t" name="crc16">CRC-16/CCITT-FALSE of complete payload</field>
