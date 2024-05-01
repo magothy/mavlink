@@ -390,7 +390,7 @@
             <field type="uint8_t" name="chunk_index">chunk index</field>
             <field type="uint8_t" name="num_chunk">total number of chunks</field>
             <field type="uint16_t" name="crc16">CRC-16/CCITT-FALSE of complete payload</field>
-            <field type="uint8_t" name="result" enum="MAV_RESULT">result of command</field>
+            <field type="uint8_t" name="result" enum="MAV_MISSION_RESULT">result of command</field>
         </message>
 
     </messages>
