@@ -68,6 +68,49 @@
             </entry>
         </enum>
 
+        <enum name="MAGOTHY_GPS_SPOOFING" bitmask="true">
+            <description>Magothy GPS spoofing flags (bitmask)</description>
+            <entry value="1" name="MAGOTHY_GPS_SPOOFING_ENABLED">
+                <description>Set if GPS spoofing detection is enabled</description>
+            </entry>
+            <entry value="2" name="MAGOTHY_GPS_SPOOFING_DETECTED">
+                <description>Set if GPS spoofing is detected</description>
+            </entry>
+            <entry value="4" name="MAGOTHY_GPS_SPOOFING_MITIGATION_ENABLED">
+                <description>Set if GPS spoofing mitigation is enabled</description>
+            </entry>
+            <entry value="8" name="MAGOTHY_GPS_SPOOFING_MITIGATION_ACTIVE">
+                <description>Set if GPS spoofing mitigation is active</description>
+            </entry>
+            <entry value="16" name="MAGOTHY_GPS_SPOOFING_EVALUATED">
+                <description>Set if GPS spoofing is evaluated</description>
+            </entry>
+            <entry value="32" name="MAGOTHY_GPS_SPOOFING_EVALUATION_STATE">
+                <description>Set if GPS spoofing evaluation state is active</description>
+            </entry>
+            <entry value="64" name="MAGOTHY_GPS_SPOOFING_GGA_FRESH">
+                <description>Set if GPS GGA data is fresh</description>
+            </entry>
+            <entry value="128" name="MAGOTHY_GPS_SPOOFING_RMC_FRESH">
+                <description>Set if GPS RMC data is fresh</description>
+            </entry>
+            <entry value="256" name="MAGOTHY_GPS_SPOOFING_GST_FRESH">
+                <description>Set if GPS GST data is fresh</description>
+            </entry>
+            <entry value="512" name="MAGOTHY_GPS_SPOOFING_ATTITUDE_FRESH">
+                <description>Set if attitude data is fresh</description>
+            </entry>
+            <entry value="1024" name="MAGOTHY_GPS_SPOOFING_ACCELERATION_FRESH">
+                <description>Set if acceleration data is fresh</description>
+            </entry>
+            <entry value="2048" name="MAGOTHY_GPS_SPOOFING_ANGULAR_RATE_FRESH">
+                <description>Set if angular rate data is fresh</description>
+            </entry>
+            <entry value="4096" name="MAGOTHY_GPS_SPOOFING_SPEED_FRESH">
+                <description>Set if speed data is fresh</description>
+            </entry>
+        </enum>
+
         <!-- magothy specific MAV_CMD_* commands -->
         <enum name="MAV_CMD">
             <!-- 200 to 214 used by common.xml -->
@@ -314,9 +357,7 @@
             <field type="float" name="altitude" units="m">Altitude - NaN for unset. On USV: altimeter reading. On arial drone: MSL</field>
             <field type="float" name="depth" units="m">Depth - NaN for unset. Depth below waterline</field>
             <field type="float[4]" name="position_error_covar" units="cm^2">Position error covariance matrix, units are m^2 - NaN for unset</field>
-            <field type="uint8_t" name="gps_spoofing_mitigation_enabled">1 if GPS spoofing mitigation is enabled, else 0</field>
-            <field type="uint8_t" name="gps_spoofing_mitigation_active">1 if GPS spoofing mitigation is active, else 0</field>
-            <field type="uint8_t" name="gps_spoofing_detected">1 if GPS spoofing is detected, else 0</field>
+            <field type="uint16_t" name="gps_spoofing_status_bitmask" enum="MAGOTHY_GPS_SPOOFING" display="bitmask">Bitmask indicating GPS spoofing status</field>
         </message>
 
         <message id="50005" name="MAGOTHY_PROTOBUF_PROXY">
