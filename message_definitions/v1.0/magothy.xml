@@ -73,40 +73,37 @@
             <entry value="1" name="MAGOTHY_GPS_SPOOFING_ENABLED">
                 <description>Set if GPS spoofing detection is enabled</description>
             </entry>
-            <entry value="2" name="MAGOTHY_GPS_SPOOFING_DETECTED">
-                <description>Set if GPS spoofing is detected</description>
-            </entry>
-            <entry value="4" name="MAGOTHY_GPS_SPOOFING_MITIGATION_ENABLED">
-                <description>Set if GPS spoofing mitigation is enabled</description>
-            </entry>
-            <entry value="8" name="MAGOTHY_GPS_SPOOFING_MITIGATION_ACTIVE">
-                <description>Set if GPS spoofing mitigation is active</description>
-            </entry>
-            <entry value="16" name="MAGOTHY_GPS_SPOOFING_EVALUATED">
+            <entry value="2" name="MAGOTHY_GPS_SPOOFING_EVALUATED">
                 <description>Set if GPS spoofing is evaluated</description>
             </entry>
-            <entry value="32" name="MAGOTHY_GPS_SPOOFING_EVALUATION_STATE">
-                <description>Set if GPS spoofing evaluation state is active</description>
+            <entry value="4" name="MAGOTHY_GPS_SPOOFING_DETECTED">
+                <description>Set if GPS spoofing is detected</description>
             </entry>
-            <entry value="64" name="MAGOTHY_GPS_SPOOFING_GGA_FRESH">
+            <entry value="8" name="MAGOTHY_GPS_SPOOFING_MITIGATION_ENABLED">
+                <description>Set if GPS spoofing mitigation is enabled</description>
+            </entry>
+            <entry value="16" name="MAGOTHY_GPS_SPOOFING_MITIGATION_ACTIVE">
+                <description>Set if GPS spoofing mitigation is active</description>
+            </entry>            
+            <entry value="32" name="MAGOTHY_GPS_SPOOFING_GGA_FRESH">
                 <description>Set if GPS GGA data is fresh</description>
             </entry>
-            <entry value="128" name="MAGOTHY_GPS_SPOOFING_RMC_FRESH">
+            <entry value="64" name="MAGOTHY_GPS_SPOOFING_RMC_FRESH">
                 <description>Set if GPS RMC data is fresh</description>
             </entry>
-            <entry value="256" name="MAGOTHY_GPS_SPOOFING_GST_FRESH">
+            <entry value="128" name="MAGOTHY_GPS_SPOOFING_GST_FRESH">
                 <description>Set if GPS GST data is fresh</description>
             </entry>
-            <entry value="512" name="MAGOTHY_GPS_SPOOFING_ATTITUDE_FRESH">
+            <entry value="256" name="MAGOTHY_GPS_SPOOFING_ATTITUDE_FRESH">
                 <description>Set if attitude data is fresh</description>
             </entry>
-            <entry value="1024" name="MAGOTHY_GPS_SPOOFING_ACCELERATION_FRESH">
+            <entry value="512" name="MAGOTHY_GPS_SPOOFING_ACCELERATION_FRESH">
                 <description>Set if acceleration data is fresh</description>
             </entry>
-            <entry value="2048" name="MAGOTHY_GPS_SPOOFING_ANGULAR_RATE_FRESH">
+            <entry value="1024" name="MAGOTHY_GPS_SPOOFING_ANGULAR_RATE_FRESH">
                 <description>Set if angular rate data is fresh</description>
             </entry>
-            <entry value="4096" name="MAGOTHY_GPS_SPOOFING_SPEED_FRESH">
+            <entry value="2048" name="MAGOTHY_GPS_SPOOFING_SPEED_FRESH">
                 <description>Set if speed data is fresh</description>
             </entry>
         </enum>
