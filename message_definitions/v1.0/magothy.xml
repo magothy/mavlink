@@ -256,6 +256,28 @@
             </entry>
         </enum>
 
+        <enum name="MAGOTHY_BEARING_CORRECTION_SOURCE">
+            <description>Origin of a resolved bearing observation.</description>
+            <entry value="0" name="MAGOTHY_BEARING_CORRECTION_SOURCE_BEACON"><description>Hardware beacon paired with a position report.</description></entry>
+            <entry value="1" name="MAGOTHY_BEARING_CORRECTION_SOURCE_STATIONARY_BEACON"><description>Hardware beacon in the configured survey list.</description></entry>
+            <entry value="2" name="MAGOTHY_BEARING_CORRECTION_SOURCE_VISUAL_LANDMARK"><description>Visual landmark.</description></entry>
+            <entry value="3" name="MAGOTHY_BEARING_CORRECTION_SOURCE_EXTERNAL"><description>External MAVLink bearing with a bundled position.</description></entry>
+        </enum>
+
+        <enum name="MAGOTHY_BEARING_CORRECTION_OUTCOME">
+            <description>Disposition of a resolved bearing observation.</description>
+            <entry value="0" name="MAGOTHY_BEARING_CORRECTION_OUTCOME_ACCEPTED"><description>Applied to the navigation estimate.</description></entry>
+            <entry value="1" name="MAGOTHY_BEARING_CORRECTION_OUTCOME_ESTIMATOR_REJECTED"><description>Rejected by the estimator.</description></entry>
+            <entry value="2" name="MAGOTHY_BEARING_CORRECTION_OUTCOME_STALE"><description>Observation expired.</description></entry>
+            <entry value="3" name="MAGOTHY_BEARING_CORRECTION_OUTCOME_SUPERSEDED"><description>A newer observation for this source superseded it.</description></entry>
+            <entry value="4" name="MAGOTHY_BEARING_CORRECTION_OUTCOME_NO_MATCHING_POSITION"><description>No usable matching source position.</description></entry>
+            <entry value="5" name="MAGOTHY_BEARING_CORRECTION_OUTCOME_INVALID_SOURCE"><description>Invalid source or observation.</description></entry>
+            <entry value="6" name="MAGOTHY_BEARING_CORRECTION_OUTCOME_SOURCE_TOO_CLOSE"><description>Source closer than the permitted distance.</description></entry>
+            <entry value="7" name="MAGOTHY_BEARING_CORRECTION_OUTCOME_SOURCE_UNCERTAINTY"><description>Source position uncertainty too large.</description></entry>
+            <entry value="8" name="MAGOTHY_BEARING_CORRECTION_OUTCOME_POLICY_SKIPPED"><description>Skipped by the correction selection policy.</description></entry>
+            <entry value="9" name="MAGOTHY_BEARING_CORRECTION_OUTCOME_DISABLED"><description>Navigation from this source type is disabled.</description></entry>
+        </enum>
+
     </enums>
 
     <messages>
@@ -460,6 +482,16 @@
             <field type="float" name="min_safe_distance_m" units="m">Minimum distance to maintain from obstacles (m)</field>
             <field type="float" name="field_of_view_deg" units="deg">Field of view (deg)</field>
             <field type="float" name="bearing_to_obstacle_deg" units="deg">Bearing to nearest obstacle (deg) clockwise from north, NaN if no obstacle detected</field>
+        </message>
+
+        <message id="50008" name="MAGOTHY_BEARING_CORRECTION">
+            <description>One resolved bearing observation from a navigation correction batch. Emitted for accepted and rejected observations; not a command or measurement input.</description>
+            <field type="uint8_t" name="source" enum="MAGOTHY_BEARING_CORRECTION_SOURCE">Observation source type.</field>
+            <field type="char[128]" name="source_id">Source identifier bytes, truncated to 128 bytes; NUL padded when shorter. Beacon identifiers are decimal internal beacon IDs.</field>
+            <field type="int64_t" name="measurement_time_usec" units="us">Measurement timestamp on the sender's monotonic clock, not Unix time.</field>
+            <field type="int64_t" name="correction_time_usec" units="us">Correction batch timestamp on the same sender monotonic clock.</field>
+            <field type="double" name="bearing_deg" units="deg">Original bearing: clockwise from north for visual landmarks, clockwise from the bow for all other sources. May be non-finite for an invalid observation.</field>
+            <field type="uint8_t" name="outcome" enum="MAGOTHY_BEARING_CORRECTION_OUTCOME">Observation disposition.</field>
         </message>
 
     </messages>
